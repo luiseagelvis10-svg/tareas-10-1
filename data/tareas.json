@@ -35,7 +35,15 @@
       "pdf": true,
       "title": "Taller evaluativo #2 + evaluación escrita",
       "desc": "Entrega del taller evaluativo #2 (documento adjunto) y presentación de la evaluación escrita.",
-      "original": "FÍSICA - Entrega de taller evaluativo #2 (documento adjunto) y presentación de evaluación escrita."
+      "original": "FÍSICA - Entrega de taller evaluativo #2 (documento adjunto) y presentación de evaluación escrita.",
+      "files": [
+        {
+          "name": "taller-2-fisica-decimo.docx",
+          "path": "adjuntos/2026-09-30-16-59-fis/taller-2-fisica-decimo.docx",
+          "bytes": 12407,
+          "clave": "2026-09-30T1659|taller-2-fisica-decimo.docx"
+        }
+      ]
     },
     {
       "id": "2026-10-06T11:58|qui",
@@ -47,7 +55,15 @@
       "pdf": true,
       "title": "Taller: sistemas de medidas y escalas de temperatura",
       "desc": "Revisión del taller de sistemas de medidas y escalas de temperatura.",
-      "original": "QUÍMICA - Revisión Taller sistemas de medidas y escalas de temperatura."
+      "original": "QUÍMICA - Revisión Taller sistemas de medidas y escalas de temperatura.",
+      "files": [
+        {
+          "name": "SISTEMA DE MEDIDAS 10.docx",
+          "path": "adjuntos/2026-10-06-11-58-qui/sistema-de-medidas-10.docx",
+          "bytes": 56922,
+          "clave": "2026-10-06T1158|SISTEMA DE MEDIDAS 10.docx"
+        }
+      ]
     },
     {
       "id": "2026-09-30T17:23|mat",
@@ -59,7 +75,15 @@
       "pdf": true,
       "title": "Taller evaluativo #2 + evaluación escrita",
       "desc": "Entrega del taller evaluativo #2 (documento adjunto) y presentación de la evaluación escrita sobre el tema.",
-      "original": "MATEMÁTICAS - Entrega de taller evaluativo #2 (documento adjunto) y presentación de evaluación escrita sobre el tema."
+      "original": "MATEMÁTICAS - Entrega de taller evaluativo #2 (documento adjunto) y presentación de evaluación escrita sobre el tema.",
+      "files": [
+        {
+          "name": "taller 2 - matematicas - decimo - funciones.docx",
+          "path": "adjuntos/2026-09-30-17-23-mat/taller-2-matematicas-decimo-funciones.docx",
+          "bytes": 12355,
+          "clave": "2026-09-30T1723|taller 2 - matematicas - decimo - funciones.docx"
+        }
+      ]
     },
     {
       "id": "2026-09-24T10:41|eti",
@@ -83,7 +107,15 @@
       "pdf": true,
       "title": "Consulta: Eudaimonía de Aristóteles",
       "desc": "Tarea de consulta en casa: investigar el concepto aristotélico de Eudaimonía (felicidad) y escribir una reflexión corta de una página sobre un hábito personal que debas equilibrar para alcanzar tu propio «justo medio».",
-      "original": "ÉTICA ACTITUDES  Y EN VALORES HUMANOS - Tarea de consulta en casa: Investigar el concepto aristotélico de Eudaimonía (felicidad) y escribir una reflexión corta de una página sobre un hábito personal que debas equilibrar para alcanzar su propio \"justo medio\"."
+      "original": "ÉTICA ACTITUDES  Y EN VALORES HUMANOS - Tarea de consulta en casa: Investigar el concepto aristotélico de Eudaimonía (felicidad) y escribir una reflexión corta de una página sobre un hábito personal que debas equilibrar para alcanzar su propio \"justo medio\".",
+      "files": [
+        {
+          "name": "ETICA 10.1_CLASE SEMANA 4_14-9-26.pdf",
+          "path": "adjuntos/2026-09-14-09-01-eti/etica-10-1-clase-semana-4-14-9-26.pdf",
+          "bytes": 103530,
+          "clave": "2026-09-14T0901|ETICA 10.1_CLASE SEMANA 4_14-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-21T10:50|rel",
@@ -96,7 +128,15 @@
       "title": "Consulta: Kant y el imperativo categórico",
       "desc": "Tarea de consulta en casa:\n1. Buscar y definir qué es el imperativo categórico.\n2. Responder por escrito: ¿existe alguna situación en la que sea éticamente correcto mentir, o la regla de Kant debe ser absoluta? Justifica tu respuesta.\n3. Biografía de Immanuel Kant y sus aportes al pensamiento.\n4. ¿En qué consiste el «deber ser»?\n5. Reflexión de mínimo 30 palabras sobre la frase: «Obra de tal modo que la máxima de tu voluntad pueda valer siempre, al mismo tiempo, como principio de una legislación universal» (Kant).",
       "original": "ÉTICA ACTITUDES  Y EN VALORES HUMANOS - ÉTICA ACTITUDES  Y EN VALORES HUMANOS - TAREA DE CONSULTA EN CASA:\nSE REVISA EN LA SEMANA 10 – PERIODO 1 – LUNES 26 DE OCTUBRE 2026\n1.\tBuscar y definir qué es el Imperativo Categórico. \n2.\tResponder por escrito: ¿Existe alguna situación en la que sea éticamente correcto mentir, o la regla de Kant debe ser absoluta? Justifica tu respuesta.\n3.\tBiografía de Immanuel Kant, también aportes al pensamiento de la humanidad.\n4.\t¿En qué consiste el deber ser?\n5.\tRealiza una reflexión de máximo mínimo 30 palabras con base en la frase filosófica: \"Obra de tal modo que la máxima de tu voluntad pueda valer siempre, al mismo tiempo, como principio de una legislación universal\". (Immanuel Kant)",
-      "note": "En Academics aparece registrada bajo Religión, pero el texto dice que es de Ética y se revisa el lunes. La ubicamos en la clase de Ética."
+      "note": "En Academics aparece registrada bajo Religión, pero el texto dice que es de Ética y se revisa el lunes. La ubicamos en la clase de Ética.",
+      "files": [
+        {
+          "name": "EDUCACION RELIGIOSA ESCOLAR Y AGUSTINOLOGIA 10-1.1_CLASE SEMANA 5_22-9-26.pdf",
+          "path": "adjuntos/2026-09-21-10-50-rel/educacion-religiosa-escolar-y-agustinologia-10-1-1-clase-semana-5-22-9-26.pdf",
+          "bytes": 73591,
+          "clave": "2026-09-21T1050|EDUCACION RELIGIOSA ESCOLAR Y AGUSTINOLOGIA 10-1.1_CLASE SEMANA 5_22-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-28T10:23|eti",
@@ -108,7 +148,15 @@
       "pdf": true,
       "title": "Actividad temática semana 6",
       "desc": "Temática de la semana 6 de Ética. Se revisa el lunes 26 de octubre.\nPara hacerla debes abrir el documento PDF adjunto.",
-      "original": "ÉTICA ACTITUDES  Y EN VALORES HUMANOS - TEMÁTICA SEMANA 6 de ética: esta actividad se revisará en la semana 10 del primer período (lunes 26 de octubre de 2026) PARA REALIZAR LA ACTIVIDAD DEBES ABRIR EL DOCUMENTO ADJUNTO EN PDF"
+      "original": "ÉTICA ACTITUDES  Y EN VALORES HUMANOS - TEMÁTICA SEMANA 6 de ética: esta actividad se revisará en la semana 10 del primer período (lunes 26 de octubre de 2026) PARA REALIZAR LA ACTIVIDAD DEBES ABRIR EL DOCUMENTO ADJUNTO EN PDF",
+      "files": [
+        {
+          "name": "ETICA 10.1_CLASE SEMANA 6_28-9-26.pdf",
+          "path": "adjuntos/2026-09-28-10-23-eti/etica-10-1-clase-semana-6-28-9-26.pdf",
+          "bytes": 154910,
+          "clave": "2026-09-28T1023|ETICA 10.1_CLASE SEMANA 6_28-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-15T15:09|rel",
@@ -120,7 +168,15 @@
       "pdf": true,
       "title": "Conexión bíblica + Cartilla de Agustinología pág. 9–12",
       "desc": "1. Lee 1 Timoteo 1, 18-19 y escribe en el cuaderno una reflexión (mínimo 20 palabras) sobre cómo una buena conciencia evita que «naufraguemos» en la vida.\n2. Busca en tu Biblia Romanos 2, 14-15, léelo en familia y escribe media página sobre cómo la ley de Dios está escrita en el corazón de todas las personas.\n3. Cartilla de Agustinología:\n   • Lee la página 9 y escribe en el globo de diálogo qué es ser humano para ti.\n   • Desarrolla las actividades de las páginas 10 y 11.\n   • Lee y resume la página 12.",
-      "original": "EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - TAREA \n(se presenta en la semana 10 del primer período: 27 de octubre de 2026)\n\n1.\tCon base en la Conexión Bíblica de: Lectura de 1 Timoteo 1, 18-19 realiza una reflexión en el cuaderno, de mínimo 20 palabras, sobre cómo una buena conciencia evita que \"naufraguemos\" en la vida.\n\n2.\tTambién Busca en tu Biblia Católica el pasaje de Romanos 2, 14-15. Léelo en familia y escribe en tu cuaderno una reflexión de media página sobre cómo la ley de Dios está escrita en el corazón de todas las personas, incluso de quienes no lo conocen.\n3.\tEn la Cartilla de Agustinología:\n\tSolo lee la página 9 y en el globo de diálogo escribe qué es ser humano (hombre y mujer) para ti.\n\tDesarrolla la actividad de la página 10.\n\tDesarrolla la actividad de la página 11.\n\tLee y resume la página 12."
+      "original": "EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - TAREA \n(se presenta en la semana 10 del primer período: 27 de octubre de 2026)\n\n1.\tCon base en la Conexión Bíblica de: Lectura de 1 Timoteo 1, 18-19 realiza una reflexión en el cuaderno, de mínimo 20 palabras, sobre cómo una buena conciencia evita que \"naufraguemos\" en la vida.\n\n2.\tTambién Busca en tu Biblia Católica el pasaje de Romanos 2, 14-15. Léelo en familia y escribe en tu cuaderno una reflexión de media página sobre cómo la ley de Dios está escrita en el corazón de todas las personas, incluso de quienes no lo conocen.\n3.\tEn la Cartilla de Agustinología:\n\tSolo lee la página 9 y en el globo de diálogo escribe qué es ser humano (hombre y mujer) para ti.\n\tDesarrolla la actividad de la página 10.\n\tDesarrolla la actividad de la página 11.\n\tLee y resume la página 12.",
+      "files": [
+        {
+          "name": "EDUCACION RELIGIOSA ESCOLAR Y AGUSTINOLOGIA 10.1_CLASE SEMANA 4_15-9-26.pdf",
+          "path": "adjuntos/2026-09-15-15-09-rel/educacion-religiosa-escolar-y-agustinologia-10-1-clase-semana-4-15-9-26.pdf",
+          "bytes": 108340,
+          "clave": "2026-09-15T1509|EDUCACION RELIGIOSA ESCOLAR Y AGUSTINOLOGIA 10.1_CLASE SEMANA 4_15-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-21T15:00|rel",
@@ -132,7 +188,15 @@
       "pdf": true,
       "title": "Tarea de consulta (PDF adjunto)",
       "desc": "Tarea de consulta. Se revisa en la semana 10, martes 27 de octubre.\nRevisa el documento PDF adjunto.",
-      "original": "EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - TAREA DE CONSULTA:\nSE REVISA EN LA SEMANA 10 (MARTES 27 OCTUBRE 2026)\n\nRevisa el Documento adjunto en PDF"
+      "original": "EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - TAREA DE CONSULTA:\nSE REVISA EN LA SEMANA 10 (MARTES 27 OCTUBRE 2026)\n\nRevisa el Documento adjunto en PDF",
+      "files": [
+        {
+          "name": "ETICA 10.1_CLASE SEMANA 5_21-9-26.pdf",
+          "path": "adjuntos/2026-09-21-15-00-rel/etica-10-1-clase-semana-5-21-9-26.pdf",
+          "bytes": 126789,
+          "clave": "2026-09-21T1500|ETICA 10.1_CLASE SEMANA 5_21-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-29T13:55|rel",
@@ -144,7 +208,15 @@
       "pdf": true,
       "title": "Actividad semana 6 de ERE",
       "desc": "Actividad de la semana 6 de ERE y Agustinología. Se revisa el martes 27 de octubre.\nPara hacerla debes abrir el documento PDF adjunto.",
-      "original": "SEMANA 6 de ERE y AGUSTINOLOGÍA: esta actividad se revisará en la semana 10 del primer período (martes 27 de octubre de 2026) PARA REALIZAR LA ACTIVIDAD DEBES ABRIR EL DOCUMENTO ADJUNTO EN PDF"
+      "original": "SEMANA 6 de ERE y AGUSTINOLOGÍA: esta actividad se revisará en la semana 10 del primer período (martes 27 de octubre de 2026) PARA REALIZAR LA ACTIVIDAD DEBES ABRIR EL DOCUMENTO ADJUNTO EN PDF",
+      "files": [
+        {
+          "name": "ERE Y AGUSTINOLOGIA - 10.1_CLASE SEMANA 6_29-09-26.pdf",
+          "path": "adjuntos/2026-09-29-13-55-rel/ere-y-agustinologia-10-1-clase-semana-6-29-09-26.pdf",
+          "bytes": 112223,
+          "clave": "2026-09-29T1355|ERE Y AGUSTINOLOGIA - 10.1_CLASE SEMANA 6_29-09-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-16T08:03|cat",
@@ -156,7 +228,15 @@
       "pdf": true,
       "title": "Bitácora de Alertas",
       "desc": "Compromiso en casa: diseñar una «Bitácora de Alertas».\nDurante la semana registra un momento de alta presión académica: ¿qué sentiste en el cuerpo y qué hábito de autocuidado aplicaste para regularte (pausa activa, hidratación, música, hablar con tu mamá, papá u otra persona)?",
-      "original": "CÁTEDRA SOCIOEMOCIONAL - Compromiso en Casa (Tarea de Consulta y Complemento)\nSe revisará en la semana 10 del primer período: miércoles 28 de octubre de 2026\nAcción: Diseñar una \"Bitácora de Alertas\". \nDurante la semana, registrarán un momento de alta presión académica.\n¿Qué sintieron en el cuerpo y qué hábito de autocuidado (pausa activa, hidratación, música, hablar o dialogar con la madre o padre de familia u otra persona) aplicaron para regularse?"
+      "original": "CÁTEDRA SOCIOEMOCIONAL - Compromiso en Casa (Tarea de Consulta y Complemento)\nSe revisará en la semana 10 del primer período: miércoles 28 de octubre de 2026\nAcción: Diseñar una \"Bitácora de Alertas\". \nDurante la semana, registrarán un momento de alta presión académica.\n¿Qué sintieron en el cuerpo y qué hábito de autocuidado (pausa activa, hidratación, música, hablar o dialogar con la madre o padre de familia u otra persona) aplicaron para regularse?",
+      "files": [
+        {
+          "name": "CATEDRA SOCIOEMOCIONAL 10.1_CLASE SEMANA 4_16-9-26.pdf",
+          "path": "adjuntos/2026-09-16-08-03-cat/catedra-socioemocional-10-1-clase-semana-4-16-9-26.pdf",
+          "bytes": 130969,
+          "clave": "2026-09-16T0803|CATEDRA SOCIOEMOCIONAL 10.1_CLASE SEMANA 4_16-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-22T08:44|cat",
@@ -168,7 +248,15 @@
       "pdf": true,
       "title": "Entrevista + ensayo sobre John C. Maxwell",
       "desc": "1. Entrevista a un adulto de tu familia o comunidad sobre los retos emocionales que vivió al salir del colegio y cómo cambió su autoconcepto. Escribe una reflexión (mínimo 50 palabras) sobre lo que aplica a tu propia transición.\n2. Ensayo de mínimo 100 palabras sobre la frase de John C. Maxwell: «El crecimiento es el gran separador entre los que triunfan y los que no…». Introducción (20+), desarrollo (60+) y conclusión (20+).\n3. Explica el «puente» entre tu ANTES y tus expectativas de la adultez DESPUÉS.\n4. Biografía de John Calvin Maxwell.\n5. ¿Cuáles son los 5 niveles de liderazgo según Maxwell?",
-      "original": "COMPROMISO EN CASA (TAREA DE CONSULTA Y COMPLEMENTO)\nSE REVISA EN LA SEMANA 10 DEL PERÍODO 1 (28 DE OCTUBRE DE 2026 MIÉRCOLES)\n\n1.\tAcción: Entrevistar a un adulto de su familia o comunidad sobre los retos emocionales que vivió al salir del colegio y cómo cambió su autoconcepto. Escribir una reflexión corta (mínimo 50 palabras) sobre qué aprendizajes de esa entrevista aplican para su propia transición.\n2.\tCon base en la frase de superación: \"El crecimiento es el gran separador entre los que triunfan y los que no. Cuando vemos a personas que sobresalen, es porque han crecido intencionalmente.\" (John C. Maxwell.) realiza un ensayo de mínimo 100 palabras, distribuidas así:\na)\tIntroducción (mínimo 20 palabras o más)\nb)\tDesarrollo (mínimo 60 palabras o más)\nc)\tConclusión (mínimo 20 palabras o más)\n\n3.\tExplicar el \"puente\" que une su ANTES con sus expectativas de la adultez DESPUÉS.\n4.\tBiografía de John Calvin Maxwell.\n5.\t¿Cuáles son los 5 niveles de liderazgo según John Maxwell?"
+      "original": "COMPROMISO EN CASA (TAREA DE CONSULTA Y COMPLEMENTO)\nSE REVISA EN LA SEMANA 10 DEL PERÍODO 1 (28 DE OCTUBRE DE 2026 MIÉRCOLES)\n\n1.\tAcción: Entrevistar a un adulto de su familia o comunidad sobre los retos emocionales que vivió al salir del colegio y cómo cambió su autoconcepto. Escribir una reflexión corta (mínimo 50 palabras) sobre qué aprendizajes de esa entrevista aplican para su propia transición.\n2.\tCon base en la frase de superación: \"El crecimiento es el gran separador entre los que triunfan y los que no. Cuando vemos a personas que sobresalen, es porque han crecido intencionalmente.\" (John C. Maxwell.) realiza un ensayo de mínimo 100 palabras, distribuidas así:\na)\tIntroducción (mínimo 20 palabras o más)\nb)\tDesarrollo (mínimo 60 palabras o más)\nc)\tConclusión (mínimo 20 palabras o más)\n\n3.\tExplicar el \"puente\" que une su ANTES con sus expectativas de la adultez DESPUÉS.\n4.\tBiografía de John Calvin Maxwell.\n5.\t¿Cuáles son los 5 niveles de liderazgo según John Maxwell?",
+      "files": [
+        {
+          "name": "CATEDRA SOCIOEMOCIONAL 10-1.1_CLASE SEMANA 5_23-9-26.pdf",
+          "path": "adjuntos/2026-09-22-08-44-cat/catedra-socioemocional-10-1-1-clase-semana-5-23-9-26.pdf",
+          "bytes": 166485,
+          "clave": "2026-09-22T0844|CATEDRA SOCIOEMOCIONAL 10-1.1_CLASE SEMANA 5_23-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-10-01T12:23|cat",
@@ -180,7 +268,15 @@
       "pdf": true,
       "title": "Actividad semana 6 de Socioemocional",
       "desc": "Actividad de la semana 6 de educación socioemocional. Se revisa el miércoles 28 de octubre.\nPara hacerla debes abrir el documento PDF adjunto.",
-      "original": "CÁTEDRA SOCIOEMOCIONAL - SEMANA 6 de cátedra en educación socioemocional: esta actividad se revisará en la semana 10 del primer período (miércoles 28 de octubre de 2026) PARA REALIZAR LA ACTIVIDAD DEBES ABRIR EL DOCUMENTO ADJUNTO EN PDF"
+      "original": "CÁTEDRA SOCIOEMOCIONAL - SEMANA 6 de cátedra en educación socioemocional: esta actividad se revisará en la semana 10 del primer período (miércoles 28 de octubre de 2026) PARA REALIZAR LA ACTIVIDAD DEBES ABRIR EL DOCUMENTO ADJUNTO EN PDF",
+      "files": [
+        {
+          "name": "CATEDRA ED. S.E. - 10.1_CLASE SEMANA 6_30-9-26.pdf",
+          "path": "adjuntos/2026-10-01-12-23-cat/catedra-ed-s-e-10-1-clase-semana-6-30-9-26.pdf",
+          "bytes": 180297,
+          "clave": "2026-10-01T1223|CATEDRA ED. S.E. - 10.1_CLASE SEMANA 6_30-9-26.pdf"
+        }
+      ]
     },
     {
       "id": "2026-09-24T13:51|eti",
