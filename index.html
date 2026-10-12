@@ -91,8 +91,10 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
 .bar .sp{flex:1}
 .nav{display:flex;align-items:center;gap:2px;background:var(--fill);border-radius:8px;padding:2px}
 .nav button{height:30px;min-width:32px;padding:0 10px;border-radius:6px;font-size:14px;font-weight:500;white-space:nowrap}
-#view{touch-action:pan-y;will-change:transform}
-#view.arrastrando{user-select:none;-webkit-user-select:none;cursor:grabbing}
+.zona{touch-action:pan-y;cursor:grab}
+.pista{will-change:transform}
+#view.arrastrando{user-select:none;-webkit-user-select:none}
+#view.arrastrando .zona{cursor:grabbing}
 .hint{font-size:12.5px;color:var(--fg3);text-align:center;padding:10px 16px 0}
 .nav button:hover{background:var(--card)}
 .nav .arrow{font-size:18px;line-height:1;color:var(--fg2)}
@@ -100,7 +102,9 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
 
 /* Week */
 .week{--cols:5;display:grid;grid-template-columns:92px repeat(var(--cols),minmax(0,1fr));padding:0 0 30px}
-.dh{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--barh,64px));z-index:3;background:var(--bg);border-bottom:1px solid var(--sep);padding:10px 8px 8px;display:flex;align-items:baseline;gap:6px;min-width:0}
+.dias{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--barh,64px));z-index:3;background:var(--bg);border-bottom:1px solid var(--sep);display:grid;grid-template-columns:92px minmax(0,1fr);overflow:hidden}
+.dias .pista{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr))}
+.dh{padding:10px 8px 8px;display:flex;align-items:baseline;gap:6px;min-width:0}
 .dh .dn{font-size:14px;color:var(--fg2);text-transform:capitalize}
 .dh .dd{font-family:var(--display);font-size:23px;font-weight:600;min-width:30px;height:30px;line-height:30px;text-align:center;border-radius:15px}
 .dh.today .dd{background:var(--today);color:#fff}
@@ -174,8 +178,10 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
   .bar{padding:12px 16px}
   .bar h1{font-size:25px}
   .week{--cols:1;grid-template-columns:72px minmax(0,1fr)}
+  .dias{grid-template-columns:72px minmax(0,1fr)}
   
-  .dstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:10px 16px 8px;border-bottom:1px solid var(--sep)}
+  .dstrip{display:block;overflow:hidden;padding:10px 16px 8px;border-bottom:1px solid var(--sep)}
+  .dstrip .pista{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
   .dstrip button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;border-radius:10px}
   .dstrip .l{font-size:13px;color:var(--fg2);text-transform:capitalize}
   .dstrip .n{font-family:var(--display);font-size:19px;font-weight:600;width:32px;height:32px;line-height:32px;text-align:center;border-radius:16px}
@@ -407,18 +413,19 @@ function renderWeek(){
   const shown = phone ? [state.day] : [0,1,2,3,4];
   let strip = "";
   if (phone){
-    strip = `<div class="dstrip">${days.map((d,i) => {
+    strip = `<div class="dstrip zona"><div class="pista">${days.map((d,i) => {
       const ts = tasksOn(d);
       return `<button data-day="${i}" aria-pressed="${i === state.day}" class="${iso(d) === iso(TODAY) ? "today" : ""}">
         <span class="l">${DCORTO[d.getDay()]}</span><span class="n tnum">${d.getDate()}</span>
         <span class="dots">${ts.slice(0,4).map(t => `<i style="--c:${color(t)}"></i>`).join("")}</span></button>`;
-    }).join("")}</div>`;
+    }).join("")}</div></div>`;
   }
-  let h = `<div class="dh corner"></div>`;
+  let dias = "";
   for (const i of shown){
     const d = days[i], hol = HOLIDAYS[iso(d)];
-    h += `<div class="dh ${iso(d) === iso(TODAY) ? "today" : ""}"><span class="dn">${DCORTO[d.getDay()]}</span><span class="dd tnum">${d.getDate()}</span>${hol ? `<span class="hol">${hol}</span>` : ""}</div>`;
+    dias += `<div class="dh ${iso(d) === iso(TODAY) ? "today" : ""}"><span class="dn">${DCORTO[d.getDay()]}</span><span class="dd tnum">${d.getDate()}</span>${hol ? `<span class="hol">${hol}</span>` : ""}</div>`;
   }
+  let h = "";
   const loose = shown.map(i => tasksOn(days[i]).filter(t => slotFor(t) < 0));
   if (loose.some(a => a.length)){
     h += `<div class="tc"><b>Todo el día</b></div>` + loose.map(arr => `<div class="cell">${arr.map(evHTML).join("")}</div>`).join("");
@@ -435,7 +442,7 @@ function renderWeek(){
       h += `<div class="cell ${evs.length ? "has" : ""} ${HOLIDAYS[iso(d)] ? "holiday" : ""}"><span class="cls" title="${esc(SUBJ[k].n)} · ${esc(prof)}">${esc(SUBJ[k].sh || SUBJ[k].n)}</span>${evs.map(evHTML).join("")}</div>`;
     }
   });
-  $("#view").innerHTML = strip + `<div class="week">${h}</div><p class="hint">Desliza a los lados para cambiar de semana</p>`;
+  $("#view").innerHTML = strip + `<div class="dias zona" style="--cols:${shown.length}"><div class="dh corner"></div><div class="pista">${dias}</div></div><div class="week">${h}</div><p class="hint">Desliza los números de los días para cambiar de semana</p>`;
 }
 
 function evHTML(t){
@@ -459,7 +466,7 @@ function renderMonth(){
       <span class="pills">${ts.slice(0,3).map(t => `<span class="pill ${done.has(t.id) ? "done" : ""}" style="--c:${color(t)}"><i></i><span>${esc(sh(t))}: ${esc(t.title)}</span></span>`).join("")}</span>
       ${ts.length > 3 ? `<span class="more">${ts.length - 3} más</span>` : ""}</button>`;
   }
-  $("#view").innerHTML = `<div class="month">${h}</div><p class="hint">Desliza a los lados para cambiar de mes</p>`;
+  $("#view").innerHTML = `<div class="month zona">${h}</div><p class="hint">Desliza el mes a los lados para cambiar de mes</p>`;
 }
 
 /* ===== Hojas (detalle / materias) ===== */
@@ -555,21 +562,30 @@ function mover(dir){
     : new Date(state.anchor.getFullYear(), state.anchor.getMonth() + dir, 1);
   render();
 }
-// Saca la vista hacia un lado, cambia el periodo y entra la nueva desde el otro lado
+// Los números de los días salen hacia un lado y entran los de la semana nueva desde el otro;
+// la cuadrícula de tareas solo se desvanece y vuelve a aparecer
 function deslizar(dir, desde = 0, cambiar = () => mover(dir)){
   if (animando) return;
-  vista.style.transform = ""; vista.style.opacity = "";
+  const pistas = () => [...vista.querySelectorAll(".pista, .month")];
+  const cuerpo = () => [...vista.querySelectorAll(".week")];
+  pistas().forEach(p => { p.style.transform = ""; p.style.opacity = ""; });
   if (sinMovimiento.matches || !vista.animate){ cambiar(); return; }
   animando = true;
   const w = vista.offsetWidth;
-  const salida = vista.animate([{ transform: `translateX(${desde}px)` }, { transform: `translateX(${-dir * w * 0.45}px)`, opacity: 0 }],
-    { duration: 160, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" });
-  salida.onfinish = () => {
+  const sale = [
+    ...pistas().map(p => p.animate([{ transform: `translateX(${desde}px)`, opacity: 1 }, { transform: `translateX(${-dir * w * 0.6}px)`, opacity: 0 }],
+      { duration: 170, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" })),
+    ...cuerpo().map(c => c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 170, fill: "forwards" }))
+  ];
+  Promise.all(sale.map(x => x.finished)).then(() => {
     cambiar();
-    salida.cancel();
-    vista.animate([{ transform: `translateX(${dir * w * 0.45}px)`, opacity: 0 }, { transform: "translateX(0)", opacity: 1 }],
-      { duration: 260, easing: "cubic-bezier(.2,.8,.2,1)" }).onfinish = () => { animando = false; };
-  };
+    const entra = [
+      ...pistas().map(p => p.animate([{ transform: `translateX(${dir * w * 0.6}px)`, opacity: 0 }, { transform: "translateX(0)", opacity: 1 }],
+        { duration: 280, easing: "cubic-bezier(.2,.8,.2,1)" })),
+      ...cuerpo().map(c => c.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240 }))
+    ];
+    return Promise.all(entra.map(x => x.finished));
+  }).finally(() => { animando = false; });
 }
 function irAHoy(){
   const dia = (TODAY.getDay() === 0 || TODAY.getDay() === 6) ? 0 : (TODAY.getDay()+6)%7;
@@ -579,11 +595,12 @@ function irAHoy(){
   deslizar(hoy > actual ? 1 : -1, 0, fijar);
 }
 
-// Arrastrar con el dedo o el mouse: la vista sigue al dedo y al soltar cambia si se movió lo suficiente
+// Arrastrar los números con el dedo o el mouse: siguen al dedo y al soltar cambia la semana si se movió lo suficiente
 let gesto = null;
 vista.addEventListener("pointerdown", e => {
-  if (animando || (e.pointerType === "mouse" && e.button !== 0) || !TASKS.length) return;
-  gesto = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, dx: 0, eje: null };
+  const zona = e.target.closest(".zona");
+  if (!zona || animando || (e.pointerType === "mouse" && e.button !== 0) || !TASKS.length) return;
+  gesto = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, dx: 0, eje: null, pista: zona.querySelector(".pista") || zona };
 });
 vista.addEventListener("pointermove", e => {
   if (!gesto || e.pointerId !== gesto.id) return;
@@ -598,8 +615,8 @@ vista.addEventListener("pointermove", e => {
   }
   if (gesto.eje !== "x") return;
   gesto.dx = dx;
-  vista.style.transform = `translateX(${dx}px)`;
-  vista.style.opacity = String(1 - Math.min(Math.abs(dx) / vista.offsetWidth, 1) * 0.6);
+  gesto.pista.style.transform = `translateX(${dx}px)`;
+  gesto.pista.style.opacity = String(1 - Math.min(Math.abs(dx) / gesto.pista.offsetWidth, 1) * 0.7);
 });
 function soltar(e){
   if (!gesto || e.pointerId !== gesto.id) return;
@@ -608,11 +625,11 @@ function soltar(e){
   if (g.eje !== "x") return;
   ultimoArrastre = performance.now();
   const rapidez = Math.abs(g.dx) / Math.max(performance.now() - g.t, 1);
-  if (e.type === "pointerup" && (Math.abs(g.dx) > vista.offsetWidth * 0.18 || (rapidez > 0.5 && Math.abs(g.dx) > 30))){
+  if (e.type === "pointerup" && (Math.abs(g.dx) > g.pista.offsetWidth * 0.18 || (rapidez > 0.5 && Math.abs(g.dx) > 30))){
     deslizar(g.dx < 0 ? 1 : -1, g.dx);
   } else {
-    vista.style.transform = ""; vista.style.opacity = "";
-    vista.animate?.([{ transform: `translateX(${g.dx}px)` }, { transform: "translateX(0)" }], { duration: 220, easing: "cubic-bezier(.2,.8,.2,1)" });
+    g.pista.style.transform = ""; g.pista.style.opacity = "";
+    g.pista.animate?.([{ transform: `translateX(${g.dx}px)` }, { transform: "translateX(0)" }], { duration: 220, easing: "cubic-bezier(.2,.8,.2,1)" });
   }
 }
 vista.addEventListener("pointerup", soltar);
@@ -620,10 +637,10 @@ vista.addEventListener("pointercancel", soltar);
 // Después de arrastrar no se abre la tarea que quedó bajo el dedo
 vista.addEventListener("click", e => { if (performance.now() - ultimoArrastre < 350){ e.stopPropagation(); e.preventDefault(); } }, true);
 
-// Deslizar con dos dedos en el trackpad
+// Deslizar con dos dedos en el trackpad sobre los números
 let rueda = 0, ruedaFin = 0, ruedaPausa;
 vista.addEventListener("wheel", e => {
-  if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || !TASKS.length) return;
+  if (!e.target.closest(".zona") || Math.abs(e.deltaX) <= Math.abs(e.deltaY) || !TASKS.length) return;
   e.preventDefault();
   clearTimeout(ruedaPausa); ruedaPausa = setTimeout(() => { rueda = 0; }, 200);
   if (animando || performance.now() - ruedaFin < 700) return;
