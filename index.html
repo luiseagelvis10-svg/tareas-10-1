@@ -298,6 +298,29 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
   .acts .btn{flex:1 1 auto;justify-content:center}
 }
 @keyframes hoja{from{transform:translateY(100%)}}
+
+/* ---------- Guía de uso ---------- */
+.ayuda{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px 0 6px;border-radius:17px;background:var(--fill);font-size:15px;font-weight:600}
+.ayuda i{width:24px;height:24px;border-radius:12px;background:var(--sec);color:#fff;font-style:normal;font-weight:700;display:grid;place-items:center;font-size:15px}
+.ayuda:active{transform:scale(.96)}
+.guia{width:min(620px,100%)}
+.guia header{border-bottom:0;padding-bottom:4px}
+.guia h2{font-size:28px}
+.guia header p{font-size:17px}
+.pasos{list-style:none;margin:0;padding:8px 20px 4px;display:flex;flex-direction:column}
+.paso{display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid var(--sep);align-items:start}
+.paso:first-child{border-top:0}
+.paso .num{width:36px;height:36px;border-radius:18px;background:color-mix(in srgb,var(--sec) 14%,transparent);color:var(--sec);font-family:var(--display);font-size:18px;font-weight:700;display:grid;place-items:center}
+.paso h3{margin:2px 0 4px;font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.paso p{margin:0;font-size:17px;line-height:1.5;color:var(--fg2)}
+.paso p b{color:var(--fg);font-weight:600}
+.muestra{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.muestra .ev{width:auto;pointer-events:none}
+.muestra .circle{width:24px;height:24px;pointer-events:none}
+.extra{margin:4px 20px 0;padding:14px 16px;border-radius:12px;background:var(--fill2);font-size:16px;line-height:1.5;color:var(--fg2)}
+.extra b{color:var(--fg)}
+.guia .acts .btn{height:46px;font-size:17px;flex:1;justify-content:center}
+@media (max-width:820px){ .ayuda span{display:none} .ayuda{padding:0 5px} .guia h2{font-size:25px} }
 </style>
 </head>
 <body>
@@ -355,6 +378,7 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
         <button id="todayBtn">Esta semana</button>
         <button class="arrow" id="next" aria-label="Siguiente">›</button>
       </div>
+      <button class="ayuda" id="ayudaBtn" aria-label="Cómo se usa"><i>?</i><span>Cómo se usa</span></button>
     </div>
     <div id="nextm" class="solo-movil"></div>
     <div id="view"><p class="loading">Cargando tareas…</p></div>
@@ -791,6 +815,36 @@ function openDetail(id){
   </div>`);
 }
 
+// Guía corta para quien abre la web por primera vez
+function openGuia(){
+  store.set("t101-guia", 1);
+  const ej = (c, txt, extra) => `<span class="ev" style="--c:${c}"><span class="et">${extra || ""}${txt}</span></span>`;
+  openModal(`<div class="sheet guia" role="dialog" aria-modal="true" aria-labelledby="gt">
+    <div class="arrastre"><div class="grab"></div>
+    <header><div><h2 id="gt">Cómo se usa</h2><p>Todas las tareas de Academics en tu horario.</p></div>
+      <div class="hd"><button class="x mini" aria-label="Cerrar" data-close="1">×</button></div></header></div>
+    <ol class="pasos">
+      <li class="paso"><span class="num">1</span><div><h3>Mira lo próximo</h3>
+        <p>La tarjeta de arriba te dice <b>qué entregas primero</b> y cuánto falta.</p></div></li>
+      <li class="paso"><span class="num">2</span><div><h3>Cada tarea está en su clase</h3>
+        <p>Aparece a la hora en que la revisan. <b>Naranja</b>: materia principal. <b>Azul</b>: secundaria. <b style="color:var(--warn)">!!!</b> = muy importante.</p>
+        <div class="muestra">${ej("var(--prin)", "Principal", '<span class="pri">!!!</span>')}${ej("var(--sec)", "Secundaria", '<span class="pri">!</span>')}</div></div></li>
+      <li class="paso"><span class="num">3</span><div><h3>Cambia de semana</h3>
+        <p>Desliza <b>los números de los días</b> hacia un lado.</p></div></li>
+      <li class="paso"><span class="num">4</span><div><h3>Toca una tarea</h3>
+        <p>Verás <b>qué hay que hacer</b> y los archivos para descargar.</p></div></li>
+      <li class="paso"><span class="num">5</span><div><h3>Márcala como hecha</h3>
+        <p>Toca el <b>círculo</b>. Si te equivocas, toca <b>Deshacer</b>.</p>
+        <div class="muestra"><span class="circle" style="--c:var(--ok)"></span><span>→</span><span class="circle" style="--c:var(--ok)" aria-checked="true"></span></div></div></li>
+      <li class="paso"><span class="num">6</span><div><h3>Busca</h3>
+        <p>Escribe una materia o una palabra en el <b>buscador</b>.</p></div></li>
+    </ol>
+    <div class="extra"><b>Tip:</b> agrégala a tu pantalla de inicio para abrirla como una app.<br>
+      iPhone: Compartir → <b>Agregar a inicio</b>. Android: menú ⋮ → <b>Agregar a pantalla principal</b>.</div>
+    <div class="acts"><button class="btn primary" data-close="1">Entendido</button></div>
+  </div>`);
+}
+
 function openSubjects(){
   const keys = Object.keys(SUBJ).filter(k => k !== "con");
   openModal(`<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="st">
@@ -832,6 +886,7 @@ document.addEventListener("click", e => {
   if (el.id === "prev" || el.id === "next") return deslizar(el.id === "next" ? 1 : -1);
   if (el.id === "todayBtn") return irAHoy();
   if (el.id === "openSubj") return openSubjects();
+  if (el.id === "ayudaBtn") return openGuia();
 });
 $("#hideDone").addEventListener("change", e => { state.hideDone = e.target.checked; store.set("t101-hide", state.hideDone); render(); });
 document.addEventListener("keydown", e => {
@@ -1009,6 +1064,7 @@ fetch("data/tareas.json?v=" + Date.now(), { cache: "no-store" })
     const m = location.hash.match(/^#t-(.+)$/);
     const t = m && TASKS.find(x => slug(x.id) === m[1]);
     if (t){ irATarea(t); openDetail(t.id); }
+    else if (!store.get("t101-guia", 0)) openGuia();
   })
   .catch(() => { $("#view").innerHTML = `<p class="loading">No se pudieron cargar las tareas. Revisa tu conexión y recarga la página.</p>`; });
 </script>
