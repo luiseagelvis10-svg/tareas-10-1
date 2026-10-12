@@ -1,0 +1,10 @@
+# Tareas 10-1
+
+Calendario de tareas del curso 10-1 del Colegio Agustiniano Campestre, con estilo del Calendario de Apple.
+Cada tarea aparece en la hora de clase en que se revisa, con su importancia (materia principal o secundaria, y si es evaluación).
+
+- `index.html`: la web (sin dependencias, se publica con GitHub Pages).
+- `data/tareas.json`: las tareas. Se actualiza todos los días a las 6:00 pm desde Academics.
+- `scripts/extraer-academics.js`: lee la planilla de tareas en Academics (solo tareas, nada personal).
+- `scripts/actualizar.mjs`: mezcla lo leído con `data/tareas.json`.
+- `ACTUALIZAR.md`: pasos de la actualización diaria.
