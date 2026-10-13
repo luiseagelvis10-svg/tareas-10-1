@@ -1,10 +1,8 @@
 // Envía el aviso diario a los celulares que activaron los avisos.
 //
-//   node scripts/notificar.mjs              arma el aviso del día y lo envía (si hay algo que avisar)
+//   node scripts/notificar.mjs              envía hasta dos avisos: lo de mañana y las tareas nuevas (si hay)
 //   node scripts/notificar.mjs --ver        solo muestra el aviso, no envía nada
-//   node scripts/notificar.mjs --prueba     envía un aviso de prueba
-//   node scripts/notificar.mjs --reenviar   vuelve a enviar el aviso del día como uno nuevo
-//                                           (el iPhone reemplaza sin sonar los avisos con la misma etiqueta)
+//   node scripts/notificar.mjs --prueba     envía los dos tipos de aviso marcados como prueba
 //
 // El aviso junta: tareas nuevas de hoy (.cache/nuevas.json, lo escribe actualizar.mjs)
 // y lo que se revisa el siguiente día de clase. Las llaves están fuera del proyecto,
@@ -30,47 +28,58 @@ const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())
 const materia = t => CORTO[t.s] || t.materia || "Otra materia";
 const lista = arr => arr.length <= 1 ? arr.join("") : arr.slice(0, -1).join(", ") + " y " + arr.at(-1);
 
-function armarAviso(){
+const enlace = t => "./" + (t ? "#t-" + t.id.replace(/[^0-9a-z]+/gi, "-") : "");
+const corta = t => { const f = new Date(t.due + "T12:00"); return `${DIAS[f.getDay()]} ${f.getDate()}`; };
+let unico = 0;
+const etiqueta = (tipo, hoy) => `tareas-10-1-${tipo}-${iso(hoy)}-${hoy.getHours()}${pad(hoy.getMinutes())}-${unico++}`; // única: el iPhone no reemplaza en silencio
+
+// Dos avisos separados: lo que se revisa el siguiente día de clase y las tareas nuevas de hoy
+function armarAvisos(){
   const hoy = new Date();
-  // Tareas nuevas: solo si la actualización de hoy las encontró
-  let nuevas = [];
-  const rutaNuevas = join(root, ".cache", "nuevas.json");
-  if (existsSync(rutaNuevas)){
-    const n = JSON.parse(readFileSync(rutaNuevas, "utf8"));
-    if (n.fecha && iso(new Date(n.fecha)) === iso(hoy)) nuevas = tareas.filter(t => n.ids.includes(t.id));
-  }
-  // Siguiente día de clase (viernes y sábado → lunes)
+  const avisos = [];
+
+  // 1. Siguiente día de clase (viernes y sábado → lunes)
   const sig = new Date(hoy); sig.setDate(sig.getDate() + 1);
   while (sig.getDay() === 0 || sig.getDay() === 6) sig.setDate(sig.getDate() + 1);
   const cuando = sig.getDay() === 1 && hoy.getDay() >= 5 ? "El lunes" : "Mañana";
   const proximas = tareas.filter(t => t.due === iso(sig));
+  if (proximas.length) avisos.push({
+    title: `${cuando} (${DIAS_LARGOS[sig.getDay()]}): ${proximas.length} ${proximas.length === 1 ? "entrega" : "entregas"}`,
+    body: proximas.map(t => `• ${materia(t)}: ${t.title}`).join("\n"),
+    url: enlace(proximas[0]),
+    tag: etiqueta("manana", hoy)
+  });
 
-  const lineas = [];
-  if (proximas.length) lineas.push(`${cuando} se revisa: ${lista(proximas.map(t => `${materia(t)} (${t.title})`))}.`);
-  if (nuevas.length){
-    const d = t => { const f = new Date(t.due + "T12:00"); return `${DIAS[f.getDay()]} ${f.getDate()}`; };
-    lineas.push(`${nuevas.length === 1 ? "Tarea nueva" : nuevas.length + " tareas nuevas"}: ${lista(nuevas.map(t => `${materia(t)}, ${d(t)}`))}.`);
+  // 2. Tareas nuevas: solo si la actualización de hoy las encontró
+  const rutaNuevas = join(root, ".cache", "nuevas.json");
+  let nuevas = [];
+  if (existsSync(rutaNuevas)){
+    const n = JSON.parse(readFileSync(rutaNuevas, "utf8"));
+    if (n.fecha && iso(new Date(n.fecha)) === iso(hoy)) nuevas = tareas.filter(t => n.ids.includes(t.id));
   }
-  if (!lineas.length) return null;
-  const titulo = proximas.length
-    ? `${cuando} (${DIAS_LARGOS[sig.getDay()]}): ${proximas.length} ${proximas.length === 1 ? "entrega" : "entregas"}`
-    : `${nuevas.length === 1 ? "Hay una tarea nueva" : "Hay tareas nuevas"} en 10-1`;
-  const primera = proximas[0] || nuevas[0];
-  return {
-    title: titulo,
-    body: lineas.join("\n"),
-    url: "./" + (primera ? "#t-" + primera.id.replace(/[^0-9a-z]+/gi, "-") : ""),
-    tag: "tareas-10-1-" + iso(hoy) + "-" + hoy.getHours() + pad(hoy.getMinutes()) // etiqueta única: el iPhone no reemplaza en silencio
-  };
+  if (nuevas.length) avisos.push({
+    title: nuevas.length === 1 ? `Tarea nueva de ${materia(nuevas[0])}` : `${nuevas.length} tareas nuevas en 10-1`,
+    body: nuevas.map(t => `• ${materia(t)} (se revisa el ${corta(t)}): ${t.title}`).join("\n"),
+    url: enlace(nuevas[0]),
+    tag: etiqueta("nuevas", hoy)
+  });
+  return avisos;
 }
 
-const aviso = modo === "--prueba"
-  ? { title: "Avisos activados", body: "Así te llegará el resumen de las tareas de 10-1 a las 6 pm.", url: "./", tag: "prueba" }
-  : armarAviso();
-if (aviso && modo === "--reenviar") aviso.tag += "-" + Date.now();
+let avisos;
+if (modo === "--prueba"){
+  // Muestra cómo se ven los dos tipos, marcados como prueba
+  const hoy = new Date(), ej = tareas.filter(t => t.due >= iso(hoy)).slice(0, 2);
+  avisos = [
+    { title: "Prueba · Mañana: 2 entregas", body: ej.map(t => `• ${materia(t)}: ${t.title}`).join("\n"), url: "./", tag: etiqueta("prueba1", hoy) },
+    { title: "Prueba · 2 tareas nuevas en 10-1", body: ej.map(t => `• ${materia(t)} (se revisa el ${corta(t)}): ${t.title}`).join("\n"), url: "./", tag: etiqueta("prueba2", hoy) }
+  ];
+} else avisos = armarAvisos();
 
-if (!aviso){ console.log("Hoy no hay nada que avisar (sin tareas nuevas ni entregas el próximo día de clase)."); process.exit(0); }
-console.log(`Aviso:\n  ${aviso.title}\n  ${aviso.body.replace(/\n/g, "\n  ")}`);
+if (!avisos.length){ console.log("Hoy no hay nada que avisar (sin tareas nuevas ni entregas el próximo día de clase)."); process.exit(0); }
+for (const a of avisos) console.log(`Aviso:
+  ${a.title}
+  ${a.body.replace(/\n/g, "\n  ")}`);
 if (modo === "--ver") process.exit(0);
 
 webpush.setVapidDetails(llaves.contacto, llaves.vapidPublica, llaves.vapidPrivada);
@@ -79,18 +88,22 @@ const r = await fetch(`${llaves.servidor}/suscripciones`, { headers: auth });
 if (!r.ok){ console.error(`ERROR: el servidor de avisos respondió ${r.status}`); process.exit(2); }
 const { suscripciones } = await r.json();
 
-let enviados = 0;
-const vencidas = [];
-await Promise.all(suscripciones.map(async s => {
-  try {
-    await webpush.sendNotification(s, JSON.stringify(aviso), { TTL: 12 * 3600, urgency: "normal" });
-    enviados++;
-  } catch (e) {
-    if (e.statusCode === 404 || e.statusCode === 410) vencidas.push(s.endpoint); // el celular desactivó los avisos
-    else console.error(`  no se pudo enviar a un celular (${e.statusCode || e.message})`);
-  }
-}));
-if (vencidas.length){
-  await fetch(`${llaves.servidor}/borrar`, { method: "POST", headers: { ...auth, "Content-Type": "application/json" }, body: JSON.stringify({ endpoints: vencidas }) });
+const vencidas = new Set();
+for (const aviso of avisos){ // uno tras otro, para que lleguen en orden
+  let enviados = 0;
+  await Promise.all(suscripciones.filter(s => !vencidas.has(s.endpoint)).map(async s => {
+    try {
+      await webpush.sendNotification(s, JSON.stringify(aviso), { TTL: 12 * 3600, urgency: "normal" });
+      enviados++;
+    } catch (e) {
+      if (e.statusCode === 404 || e.statusCode === 410) vencidas.add(s.endpoint); // el celular desactivó los avisos
+      else console.error(`  no se pudo enviar a un celular (${e.statusCode || e.message})`);
+    }
+  }));
+  console.log(`«${aviso.title}» enviado a ${enviados} de ${suscripciones.length} celulares.`);
+  await new Promise(r => setTimeout(r, 1500));
 }
-console.log(`Enviado a ${enviados} de ${suscripciones.length} celulares${vencidas.length ? ` (${vencidas.length} ya no reciben avisos y se quitaron)` : ""}.`);
+if (vencidas.size){
+  await fetch(`${llaves.servidor}/borrar`, { method: "POST", headers: { ...auth, "Content-Type": "application/json" }, body: JSON.stringify({ endpoints: [...vencidas] }) });
+  console.log(`${vencidas.size} celulares ya no reciben avisos y se quitaron.`);
+}
