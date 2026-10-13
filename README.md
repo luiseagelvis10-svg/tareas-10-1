@@ -10,3 +10,4 @@ Cada tarea aparece en la hora de clase en que se revisa, con su importancia (mat
 - `ACTUALIZAR.md`: pasos de la actualización diaria.
 - `avisos/`: servidor de avisos (Cloudflare Worker). Solo guarda las direcciones anónimas de los celulares que activaron los avisos.
 - `scripts/notificar.mjs`: envía el aviso de las 6 pm. Las llaves están fuera del repositorio, en el computador de Luis.
+- `scripts/avisar.cmd` + `avisar-oculto.vbs`: recordatorios de las 3 pm y 9 pm, programados en el Programador de tareas de Windows (carpeta "Tareas 10-1"). Registro en `.cache/avisos.log`.

@@ -3,6 +3,8 @@
 //   node scripts/notificar.mjs              envía hasta dos avisos: lo de mañana y las tareas nuevas (si hay)
 //   node scripts/notificar.mjs --ver        solo muestra el aviso, no envía nada
 //   node scripts/notificar.mjs --prueba     envía los dos tipos de aviso marcados como prueba
+//   node scripts/notificar.mjs --tarde      recordatorio de las 3 pm (solo lo de mañana; domingo a jueves)
+//   node scripts/notificar.mjs --noche      recordatorio de las 9 pm (solo lo de mañana; domingo a jueves)
 //
 // El aviso junta: tareas nuevas de hoy (.cache/nuevas.json, lo escribe actualizar.mjs)
 // y lo que se revisa el siguiente día de clase. Las llaves están fuera del proyecto,
@@ -33,8 +35,9 @@ const corta = t => { const f = new Date(t.due + "T12:00"); return `${DIAS[f.getD
 let unico = 0;
 const etiqueta = (tipo, hoy) => `tareas-10-1-${tipo}-${iso(hoy)}-${hoy.getHours()}${pad(hoy.getMinutes())}-${unico++}`; // única: el iPhone no reemplaza en silencio
 
-// Dos avisos separados: lo que se revisa el siguiente día de clase y las tareas nuevas de hoy
-function armarAvisos(){
+// Dos avisos separados: lo que se revisa el siguiente día de clase y las tareas nuevas de hoy.
+// soloRecordatorio: para los avisos de las 3 pm y 9 pm (sin tareas nuevas, con otro título)
+function armarAvisos(soloRecordatorio = ""){
   const hoy = new Date();
   const avisos = [];
 
@@ -43,12 +46,15 @@ function armarAvisos(){
   while (sig.getDay() === 0 || sig.getDay() === 6) sig.setDate(sig.getDate() + 1);
   const cuando = sig.getDay() === 1 && hoy.getDay() >= 5 ? "El lunes" : "Mañana";
   const proximas = tareas.filter(t => t.due === iso(sig));
+  const prefijo = { tarde: "Recordatorio · ", noche: "Antes de dormir · " }[soloRecordatorio] || "";
   if (proximas.length) avisos.push({
-    title: `${cuando} (${DIAS_LARGOS[sig.getDay()]}): ${proximas.length} ${proximas.length === 1 ? "entrega" : "entregas"}`,
+    title: `${prefijo}${cuando} (${DIAS_LARGOS[sig.getDay()]}): ${proximas.length} ${proximas.length === 1 ? "entrega" : "entregas"}`,
     body: proximas.map(t => `• ${materia(t)}: ${t.title}`).join("\n"),
     url: enlace(proximas[0]),
     tag: etiqueta("manana", hoy)
   });
+
+  if (soloRecordatorio) return avisos;
 
   // 2. Tareas nuevas: solo si la actualización de hoy las encontró
   const rutaNuevas = join(root, ".cache", "nuevas.json");
@@ -74,13 +80,17 @@ if (modo === "--prueba"){
     { title: "Prueba · Mañana: 2 entregas", body: ej.map(t => `• ${materia(t)}: ${t.title}`).join("\n"), url: "./", tag: etiqueta("prueba1", hoy) },
     { title: "Prueba · 2 tareas nuevas en 10-1", body: ej.map(t => `• ${materia(t)} (se revisa el ${corta(t)}): ${t.title}`).join("\n"), url: "./", tag: etiqueta("prueba2", hoy) }
   ];
+} else if (modo === "--tarde" || modo === "--noche"){
+  // Recordatorios de las 3 pm y 9 pm: solo las noches antes de un día de clase (domingo a jueves)
+  const dia = new Date().getDay();
+  avisos = dia >= 0 && dia <= 4 ? armarAvisos(modo.slice(2)) : [];
 } else avisos = armarAvisos();
 
 if (!avisos.length){ console.log("Hoy no hay nada que avisar (sin tareas nuevas ni entregas el próximo día de clase)."); process.exit(0); }
 for (const a of avisos) console.log(`Aviso:
   ${a.title}
   ${a.body.replace(/\n/g, "\n  ")}`);
-if (modo === "--ver") process.exit(0);
+if (process.argv.includes("--ver")) process.exit(0); // --ver también sirve con --tarde o --noche
 
 webpush.setVapidDetails(llaves.contacto, llaves.vapidPublica, llaves.vapidPrivada);
 const auth = { Authorization: `Bearer ${llaves.claveEnvio}` };
