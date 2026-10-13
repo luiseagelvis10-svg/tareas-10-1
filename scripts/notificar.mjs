@@ -3,6 +3,8 @@
 //   node scripts/notificar.mjs              arma el aviso del día y lo envía (si hay algo que avisar)
 //   node scripts/notificar.mjs --ver        solo muestra el aviso, no envía nada
 //   node scripts/notificar.mjs --prueba     envía un aviso de prueba
+//   node scripts/notificar.mjs --reenviar   vuelve a enviar el aviso del día como uno nuevo
+//                                           (el iPhone reemplaza sin sonar los avisos con la misma etiqueta)
 //
 // El aviso junta: tareas nuevas de hoy (.cache/nuevas.json, lo escribe actualizar.mjs)
 // y lo que se revisa el siguiente día de clase. Las llaves están fuera del proyecto,
@@ -58,13 +60,14 @@ function armarAviso(){
     title: titulo,
     body: lineas.join("\n"),
     url: "./" + (primera ? "#t-" + primera.id.replace(/[^0-9a-z]+/gi, "-") : ""),
-    tag: "tareas-10-1-" + iso(hoy)
+    tag: "tareas-10-1-" + iso(hoy) + "-" + hoy.getHours() + pad(hoy.getMinutes()) // etiqueta única: el iPhone no reemplaza en silencio
   };
 }
 
 const aviso = modo === "--prueba"
   ? { title: "Avisos activados", body: "Así te llegará el resumen de las tareas de 10-1 a las 6 pm.", url: "./", tag: "prueba" }
   : armarAviso();
+if (aviso && modo === "--reenviar") aviso.tag += "-" + Date.now();
 
 if (!aviso){ console.log("Hoy no hay nada que avisar (sin tareas nuevas ni entregas el próximo día de clase)."); process.exit(0); }
 console.log(`Aviso:\n  ${aviso.title}\n  ${aviso.body.replace(/\n/g, "\n  ")}`);
