@@ -1,0 +1,10 @@
+# Servidor de avisos de Tareas 10-1 (Cloudflare Worker).
+# Publicar: npx wrangler deploy (desde esta carpeta)
+name = "avisos-tareas-10-1"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "AVISOS"
+id = "9102f2dfb1a1454ebac12ee748379afa"

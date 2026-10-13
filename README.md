@@ -8,3 +8,5 @@ Cada tarea aparece en la hora de clase en que se revisa, con su importancia (mat
 - `scripts/extraer-academics.js`: lee la planilla de tareas en Academics (solo tareas, nada personal).
 - `scripts/actualizar.mjs`: mezcla lo leído con `data/tareas.json`.
 - `ACTUALIZAR.md`: pasos de la actualización diaria.
+- `avisos/`: servidor de avisos (Cloudflare Worker). Solo guarda las direcciones anónimas de los celulares que activaron los avisos.
+- `scripts/notificar.mjs`: envía el aviso de las 6 pm. Las llaves están fuera del repositorio, en el computador de Luis.

@@ -41,6 +41,7 @@ const previo = existsSync(dataPath) ? JSON.parse(readFileSync(dataPath, "utf8"))
 const porId = new Map(previo.tareas.map(t => [t.id, t]));
 const vistos = new Set();
 const resumen = { nuevas: [], cambiadas: [], quitadas: [] };
+const idsNuevas = [];
 
 for (const f of raw.filas) {
   const materia = f.asignatura.replace(/\s+/g, " ").trim();
@@ -65,6 +66,7 @@ for (const f of raw.filas) {
     };
     porId.set(id, nueva);
     resumen.nuevas.push(`${id} (${materia}, ${due}): ${nueva.title}`);
+    idsNuevas.push(id);
   }
 }
 
@@ -78,6 +80,8 @@ for (const [id, t] of porId) {
 
 const tareas = [...porId.values()].sort((a, b) => a.due.localeCompare(b.due) || a.id.localeCompare(b.id));
 writeFileSync(dataPath, JSON.stringify({ actualizado: raw.leido, tareas }, null, 2) + "\n");
+// Para scripts/notificar.mjs: qué tareas aparecieron en esta actualización
+writeFileSync(join(root, ".cache", "nuevas.json"), JSON.stringify({ fecha: raw.leido, ids: idsNuevas }) + "\n");
 
 console.log(`Tareas en Academics: ${raw.filas.length} · En la web: ${tareas.length}`);
 for (const [k, arr] of Object.entries(resumen)) {

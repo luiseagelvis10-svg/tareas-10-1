@@ -46,8 +46,12 @@ Todo se trabaja desde la carpeta `C:\Users\Damer\tareas-10-1`.
 1. Validar: `node -e "JSON.parse(require('fs').readFileSync('data/tareas.json','utf8'))"`.
 2. `git add data adjuntos && git commit -m "Tareas actualizadas AAAA-MM-DD" && git push`
    (el mensaje termina con la línea `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`).
-3. Cerrar la pestaña de Chrome que se abrió.
-4. Notificar solo si hubo cambios: tareas nuevas/cambiadas/quitadas y adjuntos publicados o excluidos
+3. Avisos a los celulares: `node scripts/notificar.mjs`. Junta las tareas nuevas de hoy y lo que se revisa el
+   siguiente día de clase, y lo envía a quienes activaron los avisos. Si no hay nada que avisar, no envía nada.
+   Si falla, anotarlo en la notificación a Luis pero no repetir el envío (para no mandar avisos dobles).
+   Ejecutarlo solo DESPUÉS del `git push`, para que al tocar el aviso la web ya tenga las tareas nuevas.
+4. Cerrar la pestaña de Chrome que se abrió.
+5. Notificar a Luis solo si hubo cambios: tareas nuevas/cambiadas/quitadas y adjuntos publicados o excluidos
    (ej.: "10-1: 2 tareas nuevas (Física jue 22, Inglés vie 23) y 1 adjunto nuevo").
 
 ## Claves de materias (`s`)

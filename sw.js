@@ -1,7 +1,7 @@
 // Permite instalar la web como app y usarla sin internet con lo último que se cargó.
 // - La página y las tareas: primero internet; si no hay conexión, lo guardado.
 // - Íconos y adjuntos: lo guardado primero (no cambian).
-const CACHE = "tareas-10-1-v1";
+const CACHE = "tareas-10-1-v2";
 const BASE = ["./", "index.html", "manifest.webmanifest", "iconos/icono-192.png", "iconos/icono-512.png", "iconos/apple-touch-icon.png", "iconos/favicon-64.png"];
 
 self.addEventListener("install", e => {
@@ -38,6 +38,33 @@ async function primeroGuardado(req){
   if (res.ok) cache.put(req, res.clone());
   return res;
 }
+
+// Aviso diario de las 6 pm (lo envía scripts/notificar.mjs)
+self.addEventListener("push", e => {
+  let a = {};
+  try { a = e.data ? e.data.json() : {}; } catch { a = { body: e.data && e.data.text() }; }
+  e.waitUntil(self.registration.showNotification(a.title || "Tareas 10-1", {
+    body: a.body || "Hay novedades en las tareas.",
+    icon: "iconos/icono-192.png",
+    badge: "iconos/favicon-64.png",
+    tag: a.tag || "tareas-10-1",
+    renotify: true,
+    data: { url: a.url || "./" }
+  }));
+});
+
+// Al tocar el aviso se abre la app (o se trae al frente si ya estaba abierta)
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  const destino = new URL(e.notification.data?.url || "./", self.registration.scope).href;
+  e.waitUntil((async () => {
+    const abiertas = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of abiertas){
+      if (c.url.startsWith(self.registration.scope)){ await c.focus(); return c.navigate(destino); }
+    }
+    return self.clients.openWindow(destino);
+  })());
+});
 
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);

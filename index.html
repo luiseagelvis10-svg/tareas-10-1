@@ -328,6 +328,20 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
 .muestra .circle{width:24px;height:24px;pointer-events:none}
 .extra{margin:4px 20px 0;padding:14px 16px;border-radius:12px;background:var(--fill2);font-size:16px;line-height:1.5;color:var(--fg2)}
 .extra b{color:var(--fg)}
+/* ---------- Avisos ---------- */
+.avisos{display:flex;flex-direction:column;gap:4px;padding:13px 14px;border-radius:12px;background:var(--card);box-shadow:0 0 0 .5px var(--sep)}
+.avisos b{font-size:15px;font-weight:600}
+.avisos span{font-size:14px;color:var(--fg2);line-height:1.4}
+.avisos .btn{align-self:flex-start;margin-top:8px}
+.avisos.on b{color:var(--ok)}
+.banner{display:flex;align-items:center;gap:12px;margin:12px 20px 0;padding:12px 10px 12px 14px;border-radius:12px;background:color-mix(in srgb,var(--sec) 9%,var(--bg));box-shadow:inset 0 0 0 .5px color-mix(in srgb,var(--sec) 30%,transparent);animation:sube2 .3s cubic-bezier(.2,.8,.2,1)}
+.banner svg{flex:none;width:24px;height:24px;color:var(--sec)}
+.banner .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.banner b{font-size:15px;font-weight:600}
+.banner .txt span{font-size:14px;color:var(--fg2)}
+.banner .btn{flex:none}
+@keyframes sube2{from{transform:translateY(-8px);opacity:0}}
+@media (max-width:820px){ .banner{margin:12px 16px 0} }
 .video-guia video{display:block;width:min(100%,300px);aspect-ratio:9/16;margin:12px auto;border-radius:14px;background:#000;box-shadow:0 0 0 .5px var(--sep)}
 .guia .acts .btn{height:46px;font-size:17px;flex:1;justify-content:center}
 @media (max-width:820px){ .ayuda span{display:none} .ayuda{padding:0 5px} .guia h2{font-size:25px} }
@@ -345,6 +359,7 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
     <div id="proximo"></div>
     <div class="stats" id="stats"></div>
     <div class="prog" id="prog"></div>
+    <div class="avisos" id="avisos" hidden></div>
     <div class="filters">
       <label class="buscar">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5" stroke-linecap="round"/></svg>
@@ -391,6 +406,7 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
       <button class="ayuda instalar" id="instalarBtn" aria-label="Instalar app" hidden><i>↓</i><span>Instalar app</span></button>
       <button class="ayuda" id="ayudaBtn" aria-label="Cómo se usa"><i>?</i><span>Cómo se usa</span></button>
     </div>
+    <div class="banner" id="bannerAvisos" role="region" aria-label="Activar avisos" hidden></div>
     <div id="nextm" class="solo-movil"></div>
     <div id="view"><p class="loading">Cargando tareas…</p></div>
   </main>
@@ -1080,6 +1096,81 @@ fetch("data/tareas.json?v=" + Date.now(), { cache: "no-store" })
     else if (!store.get("t101-guia", 0)) openGuia();
   })
   .catch(() => { $("#view").innerHTML = `<p class="loading">No se pudieron cargar las tareas. Revisa tu conexión y recarga la página.</p>`; });
+
+/* ===== Avisos a las 6 pm (notificaciones) ===== */
+// Servidor que guarda solo las direcciones anónimas de los celulares (carpeta avisos/)
+const SERVIDOR_AVISOS = "https://avisos-tareas-10-1.tareas-10-1.workers.dev";
+const VAPID_PUBLICA = "BG3R-Gv75h45zLdmOLnJos6x10iwgt1bwuOFwOOHxsvgMKgQXHmWOCTP4gTfiezIc8Jc-3MkgEFjCqSD-IHtZTQ";
+const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const instalada = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const pushSoportado = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const CAMPANA = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z" stroke-linejoin="round"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0" stroke-linecap="round"/></svg>`;
+const aBytes = b => { const s = atob((b + "=".repeat((4 - b.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(s, c => c.charCodeAt(0)); };
+async function suscripcionActual(){
+  if (!pushSoportado) return null;
+  const reg = await navigator.serviceWorker.ready;
+  return reg.pushManager.getSubscription();
+}
+async function activarAvisos(){
+  try {
+    const permiso = await Notification.requestPermission();
+    if (permiso !== "granted"){
+      toast(permiso === "denied" ? "Bloqueaste los avisos. Puedes activarlos en la configuración del celular." : "No se activaron los avisos");
+      return pintarAvisos();
+    }
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: aBytes(VAPID_PUBLICA) });
+    const r = await fetch(SERVIDOR_AVISOS + "/suscribir", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sub) });
+    if (!r.ok) throw new Error(r.status);
+    store.set("t101-avisos", "si");
+    toast("Listo. Te avisaremos a las 6 pm.");
+  } catch { toast("No se pudieron activar los avisos. Intenta de nuevo."); }
+  pintarAvisos();
+}
+async function desactivarAvisos(){
+  try {
+    const sub = await suscripcionActual();
+    if (sub){
+      await fetch(SERVIDOR_AVISOS + "/desuscribir", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ endpoint: sub.endpoint }) });
+      await sub.unsubscribe();
+    }
+  } catch {}
+  store.set("t101-avisos", "no");
+  toast("Avisos desactivados");
+  pintarAvisos();
+}
+async function pintarAvisos(){
+  const caja = $("#avisos"), banner = $("#bannerAvisos");
+  const ocultar = () => { caja.hidden = true; banner.hidden = true; };
+  if (!SERVIDOR_AVISOS.startsWith("https://")) return ocultar();
+  let html = "", invitar = false;
+  caja.className = "avisos";
+  if (esIOS && !instalada){
+    html = `<b>Avisos a las 6 pm</b><span>En iPhone, primero instala la app en tu pantalla de inicio (mira el video en «Cómo se usa»). Después podrás activar los avisos.</span>`;
+  } else if (!pushSoportado){
+    return ocultar();
+  } else if (Notification.permission === "denied"){
+    html = `<b>Avisos bloqueados</b><span>Para recibirlos, permite las notificaciones de esta app en la configuración de tu celular.</span>`;
+  } else if (Notification.permission === "granted" && await suscripcionActual()){
+    caja.className = "avisos on";
+    html = `<b>Avisos activados</b><span>A las 6 pm te llega un resumen con lo que se revisa al día siguiente y las tareas nuevas.</span><button class="btn" id="avisosOff">Desactivar</button>`;
+  } else {
+    html = `<b>Recibe un aviso a las 6 pm</b><span>Con lo que se revisa al día siguiente y las tareas nuevas.</span><button class="btn primary" id="avisosOn">Activar avisos</button>`;
+    invitar = store.get("t101-avisos", "") !== "no" && !store.get("t101-banner", 0);
+  }
+  caja.innerHTML = html; caja.hidden = false;
+  banner.hidden = !invitar;
+  if (invitar) banner.innerHTML = `${CAMPANA}<div class="txt"><b>¿Te avisamos a las 6 pm?</b><span>Lo que se revisa mañana y las tareas nuevas.</span></div>
+    <button class="btn primary" id="avisosOn2">Activar</button><button class="mini" id="bannerNo" aria-label="Ahora no">×</button>`;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("#avisosOn, #avisosOn2, #avisosOff, #bannerNo");
+  if (!b) return;
+  if (b.id === "avisosOff") return desactivarAvisos();
+  if (b.id === "bannerNo"){ store.set("t101-banner", 1); $("#bannerAvisos").hidden = true; return; }
+  activarAvisos();
+});
+addEventListener("load", () => pintarAvisos());
 
 /* ===== App instalable ===== */
 if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));

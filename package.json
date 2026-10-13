@@ -1,0 +1,10 @@
+{
+  "name": "tareas-10-1",
+  "private": true,
+  "type": "module",
+  "description": "Herramientas locales de la web Tareas 10-1 (actualización diaria y notificaciones)",
+  "devDependencies": {
+    "web-push": "3.6.7",
+    "wrangler": "4.143.1"
+  }
+}
