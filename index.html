@@ -1147,6 +1147,13 @@ async function pintarAvisos(){
   caja.className = "avisos";
   if (esIOS && !instalada){
     html = `<b>Avisos a las 6 pm</b><span>En iPhone, primero instala la app en tu pantalla de inicio (mira el video en «Cómo se usa»). Después podrás activar los avisos.</span>`;
+    // En iPhone sin instalar también se avisa arriba, donde se ve
+    if (!store.get("t101-banner", 0)){
+      caja.innerHTML = html; caja.hidden = false; banner.hidden = false;
+      banner.innerHTML = `${CAMPANA}<div class="txt"><b>¿Quieres avisos a las 6 pm?</b><span>En iPhone solo llegan si instalas la app en tu pantalla de inicio.</span></div>
+        <button class="btn primary" id="verComo">Ver cómo</button><button class="mini" id="bannerNo" aria-label="Ahora no">×</button>`;
+      return;
+    }
   } else if (!pushSoportado){
     return ocultar();
   } else if (Notification.permission === "denied"){
@@ -1164,9 +1171,13 @@ async function pintarAvisos(){
     <button class="btn primary" id="avisosOn2">Activar</button><button class="mini" id="bannerNo" aria-label="Ahora no">×</button>`;
 }
 document.addEventListener("click", e => {
-  const b = e.target.closest("#avisosOn, #avisosOn2, #avisosOff, #bannerNo");
+  const b = e.target.closest("#avisosOn, #avisosOn2, #avisosOff, #bannerNo, #verComo");
   if (!b) return;
   if (b.id === "avisosOff") return desactivarAvisos();
+  if (b.id === "verComo"){
+    openGuia();
+    return setTimeout(() => document.querySelector(".video-guia")?.scrollIntoView({ block: "center", behavior: "smooth" }), 350);
+  }
   if (b.id === "bannerNo"){ store.set("t101-banner", 1); $("#bannerAvisos").hidden = true; return; }
   activarAvisos();
 });
