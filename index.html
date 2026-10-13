@@ -6,7 +6,15 @@
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1c1c1e" media="(prefers-color-scheme: dark)">
 <title>Tareas 10-1</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23fff'/%3E%3Crect width='64' height='20' rx='0' fill='%23ff3b30'/%3E%3Ctext x='32' y='52' font-size='28' text-anchor='middle' font-family='Arial' font-weight='bold' fill='%231d1d1f'%3E10%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="iconos/favicon-64.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tareas 10-1">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="Las tareas de Academics del curso 10-1 en el horario de clases.">
+<meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
@@ -303,6 +311,7 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
 .ayuda{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px 0 6px;border-radius:17px;background:var(--fill);font-size:15px;font-weight:600}
 .ayuda i{width:24px;height:24px;border-radius:12px;background:var(--sec);color:#fff;font-style:normal;font-weight:700;display:grid;place-items:center;font-size:15px}
 .ayuda:active{transform:scale(.96)}
+.ayuda.instalar i{background:var(--ok)}
 .guia{width:min(620px,100%)}
 .guia header{border-bottom:0;padding-bottom:4px}
 .guia h2{font-size:28px}
@@ -378,6 +387,7 @@ button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sec);outli
         <button id="todayBtn">Esta semana</button>
         <button class="arrow" id="next" aria-label="Siguiente">›</button>
       </div>
+      <button class="ayuda instalar" id="instalarBtn" aria-label="Instalar app" hidden><i>↓</i><span>Instalar app</span></button>
       <button class="ayuda" id="ayudaBtn" aria-label="Cómo se usa"><i>?</i><span>Cómo se usa</span></button>
     </div>
     <div id="nextm" class="solo-movil"></div>
@@ -1051,15 +1061,16 @@ vista.addEventListener("wheel", e => {
 const barra = document.querySelector(".bar");
 new ResizeObserver(() => document.documentElement.style.setProperty("--barh", barra.offsetHeight + "px")).observe(barra);
 
+let sinConexion = false;
 fetch("data/tareas.json?v=" + Date.now(), { cache: "no-store" })
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(r => { if (!r.ok) throw new Error(r.status); sinConexion = r.headers.get("X-Sin-Conexion") === "1"; return r.json(); })
   .then(data => {
     TASKS = data.tareas || [];
     const u = new Date(data.actualizado);
     const horas = (Date.now() - u) / 36e5;
     const el = $("#upd");
-    el.className = "upd" + (horas > 36 ? " old" : "");
-    el.innerHTML = `<i></i>Actualizado ${u.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" })}, ${u.toLocaleTimeString("es-CO", { hour: "numeric", minute: "2-digit" })}`;
+    el.className = "upd" + (horas > 36 || sinConexion ? " old" : "");
+    el.innerHTML = `<i></i>${sinConexion ? "Sin conexión · tareas guardadas del" : "Actualizado"} ${u.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" })}, ${u.toLocaleTimeString("es-CO", { hour: "numeric", minute: "2-digit" })}`;
     render();
     const m = location.hash.match(/^#t-(.+)$/);
     const t = m && TASKS.find(x => slug(x.id) === m[1]);
@@ -1067,6 +1078,19 @@ fetch("data/tareas.json?v=" + Date.now(), { cache: "no-store" })
     else if (!store.get("t101-guia", 0)) openGuia();
   })
   .catch(() => { $("#view").innerHTML = `<p class="loading">No se pudieron cargar las tareas. Revisa tu conexión y recarga la página.</p>`; });
+
+/* ===== App instalable ===== */
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+// En Android y en Chrome/Edge de computador el navegador ofrece instalarla: mostramos el botón
+let pedirInstalar = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); pedirInstalar = e; $("#instalarBtn").hidden = false; });
+addEventListener("appinstalled", () => { pedirInstalar = null; $("#instalarBtn").hidden = true; toast("App instalada. Búscala en tu pantalla de inicio."); });
+$("#instalarBtn").addEventListener("click", async () => {
+  if (!pedirInstalar) return;
+  pedirInstalar.prompt();
+  await pedirInstalar.userChoice.catch(() => {});
+  pedirInstalar = null; $("#instalarBtn").hidden = true;
+});
 </script>
 </body>
 </html>
