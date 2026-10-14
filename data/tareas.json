@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-10-12T21:15:14.165Z",
+  "actualizado": "2026-10-14T02:46:46.621Z",
   "tareas": [
     {
       "id": "2026-09-24T11:44|rel",
@@ -86,6 +86,18 @@
       ]
     },
     {
+      "id": "2026-10-13T20:19|qui",
+      "s": "qui",
+      "materia": "Química",
+      "due": "2026-10-16",
+      "reg": "2026-10-13",
+      "type": "eval",
+      "pdf": false,
+      "title": "Evaluación escrita: sistema de medidas y temperatura",
+      "desc": "Evaluación escrita sobre el sistema de medidas y las escalas de temperatura.",
+      "original": "Evaluación escrita sobre Sistema de medidas y escalas de temperatura."
+    },
+    {
       "id": "2026-09-24T10:41|eti",
       "s": "eti",
       "materia": "Ética Actitudes y en Valores Humanos",
@@ -96,6 +108,18 @@
       "title": "Quiz 1 de Ética",
       "desc": "Quiz 1 de Ética. Se pasó a la semana 8 porque el lunes de la semana 7 fue festivo.",
       "original": "QUIZ 1 DE ÉTICA EN LA SEMANA 8 PORQUE EN LA SEMANA 7 EL LUNES FUE FESTIVO"
+    },
+    {
+      "id": "2026-10-13T15:26|ing",
+      "s": "ing",
+      "materia": "Idioma Extranjero Inglés",
+      "due": "2026-10-20",
+      "reg": "2026-10-13",
+      "type": "eval",
+      "pdf": false,
+      "title": "Tarea en Richmond (componente «Hacer»)",
+      "desc": "La nueva tarea de inglés (componente «Hacer») está en la plataforma Richmond. Está habilitada desde el martes 13 hasta el martes 20 de octubre.\n\nCómo entrar:\n1. Entra a https://richmondstudio.global/ y haz clic arriba en «CONNECT with your account».\n2. Escribe tu usuario y contraseña, presiona «LOGIN» y elige tu salón en «My Classes».\n\nDónde está la tarea:\n• En la campanita roja, arriba a la derecha, o\n• Abajo a la derecha, en «Pending Assignments».\n\nHazla con tiempo y no la dejes para el último momento.",
+      "original": "Dear parents and students, cordial saludo:\nLes informamos que la nueva tarea de inglés (componente “Hacer”) ya está disponible en la plataforma Richmond. Estará habilitada desde hoy, martes 13 de octubre, hasta el martes 20 de octubre de 2026.\nRecordamos el paso a paso para ingresar y ubicar la actividad:\n📌 Paso a paso para ingresar:\n1.\tIngrese a https://richmondstudio.global/ y haga clic arriba en \"CONNECT with your account\". \n2.\tEscriba el usuario y contraseña, presione \"LOGIN\" y seleccione su salón en \"My Classes\". \n🔔 ¿Dónde encontrar la tarea?\n•\tOpción 1:En la campanita roja: Ubicada en la esquina superior derecha. \n•\tOpcion 2: Abajo a la derecha: En la sección \"Pending Assignments\". \nLes recomendamos realizar las actividades con tiempo y no dejarlas para el último momento. Ante cualquier duda, pueden comunicarse durante esta semana.\nHave a good day."
     },
     {
       "id": "2026-09-14T09:01|eti",
@@ -168,7 +192,7 @@
       "pdf": true,
       "title": "Conexión bíblica + Cartilla de Agustinología pág. 9–12",
       "desc": "1. Lee 1 Timoteo 1, 18-19 y escribe en el cuaderno una reflexión (mínimo 20 palabras) sobre cómo una buena conciencia evita que «naufraguemos» en la vida.\n2. Busca en tu Biblia Romanos 2, 14-15, léelo en familia y escribe media página sobre cómo la ley de Dios está escrita en el corazón de todas las personas.\n3. Cartilla de Agustinología:\n   • Lee la página 9 y escribe en el globo de diálogo qué es ser humano para ti.\n   • Desarrolla las actividades de las páginas 10 y 11.\n   • Lee y resume la página 12.",
-      "original": "EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - TAREA \n(se presenta en la semana 10 del primer período: 27 de octubre de 2026)\n\n1.\tCon base en la Conexión Bíblica de: Lectura de 1 Timoteo 1, 18-19 realiza una reflexión en el cuaderno, de mínimo 20 palabras, sobre cómo una buena conciencia evita que \"naufraguemos\" en la vida.\n\n2.\tTambién Busca en tu Biblia Católica el pasaje de Romanos 2, 14-15. Léelo en familia y escribe en tu cuaderno una reflexión de media página sobre cómo la ley de Dios está escrita en el corazón de todas las personas, incluso de quienes no lo conocen.\n3.\tEn la Cartilla de Agustinología:\n\tSolo lee la página 9 y en el globo de diálogo escribe qué es ser humano (hombre y mujer) para ti.\n\tDesarrolla la actividad de la página 10.\n\tDesarrolla la actividad de la página 11.\n\tLee y resume la página 12.",
+      "original": "EDUCACIÓN  RELIGIOSA  Y AGUSTINOLOGÍA - TAREA \n(se presenta en la semana 10 del primer período: 27 de octubre de 2026)\n\n1.\tCon base en la Conexión Bíblica de: Lectura de 1 Timoteo 1, 18-19 realiza una reflexión en el cuaderno, de mínimo 20 palabras, sobre cómo una buena conciencia evita que \"naufraguemos\" en la vida.\n\n2.\tTambién Busca en tu Biblia Católica el pasaje de Romanos 2, 14-15. Léelo en familia y escribe en tu cuaderno una reflexión de media página sobre cómo la ley de Dios está escrita en el corazón de todas las personas, incluso de quienes no lo conocen.\n3.\tEn la Cartilla de Agustinología:\n\tSolo lee la página 9 y en el globo de diálogo escribe qué es ser humano (hombre y mujer) para ti.\n\tDesarrolla la actividad de la página 10.\n\tDesarrolla la actividad de la página 11.\n\tLee y resume la página 12.",
       "files": [
         {
           "name": "EDUCACION RELIGIOSA ESCOLAR Y AGUSTINOLOGIA 10.1_CLASE SEMANA 4_15-9-26.pdf",

@@ -1,5 +1,7 @@
-// Se ejecuta dentro de la página de Academics (newProcesosAlumno.aspx) ya con la
-// pestaña TAREAS cargada. Devuelve un JSON con las filas de la planilla de tareas.
+// Se ejecuta en Chrome (Claude in Chrome), en Academics (newProcesosAlumno.aspx), con la
+// planilla de TAREAS cargada. Lee las filas de la planilla y las descarga como el archivo
+// "t101-tareas.json" en la carpeta Descargas (Chrome corta las respuestas largas, por eso
+// no se devuelven directamente). Devuelve un resumen corto.
 // Solo lee datos de las tareas: nada del estudiante, notas ni pagos.
 (() => {
   const tabla = document.getElementById("ctl00_Main_grdTareas");
@@ -22,5 +24,10 @@
         adjunto: !!tr.querySelector("[id$='imgAdjunto']")
       };
     });
-  return JSON.stringify({ leido: new Date().toISOString(), filas });
+  const json = JSON.stringify({ leido: new Date().toISOString(), filas });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+  a.download = "t101-tareas.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  return JSON.stringify({ ok: true, filas: filas.length, archivo: "t101-tareas.json" });
 })();

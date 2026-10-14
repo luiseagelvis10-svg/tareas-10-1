@@ -80,8 +80,16 @@ for (const [id, t] of porId) {
 
 const tareas = [...porId.values()].sort((a, b) => a.due.localeCompare(b.due) || a.id.localeCompare(b.id));
 writeFileSync(dataPath, JSON.stringify({ actualizado: raw.leido, tareas }, null, 2) + "\n");
-// Para scripts/notificar.mjs: qué tareas aparecieron en esta actualización
-writeFileSync(join(root, ".cache", "nuevas.json"), JSON.stringify({ fecha: raw.leido, ids: idsNuevas }) + "\n");
+// Para scripts/notificar.mjs: qué tareas aparecieron hoy. Se acumulan las de todas las
+// actualizaciones del mismo día, así una actualización manual no le quita el aviso a la de las 6 pm.
+const rutaNuevas = join(root, ".cache", "nuevas.json");
+const diaLocal = s => new Date(s).toLocaleDateString("en-CA");
+let deHoy = [];
+if (existsSync(rutaNuevas)) {
+  const previa = JSON.parse(readFileSync(rutaNuevas, "utf8"));
+  if (previa.fecha && diaLocal(previa.fecha) === diaLocal(raw.leido)) deHoy = previa.ids.filter(id => porId.has(id));
+}
+writeFileSync(rutaNuevas, JSON.stringify({ fecha: raw.leido, ids: [...new Set([...deHoy, ...idsNuevas])] }) + "\n");
 
 console.log(`Tareas en Academics: ${raw.filas.length} · En la web: ${tareas.length}`);
 for (const [k, arr] of Object.entries(resumen)) {
