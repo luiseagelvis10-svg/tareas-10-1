@@ -12,9 +12,12 @@ Todo se trabaja desde la carpeta `C:\Users\Damer\tareas-10-1`.
 2. Si la página redirige a `Login.aspx`, no hay sesión: notificar
    "Inicia sesión en Academics en Chrome y luego pulsa 'Ejecutar ahora' en 'Actualizar tareas 10-1'" y terminar.
 3. Si no existe la tabla `#ctl00_Main_grdTareas`, hacer clic en el enlace **TAREAS** del menú y esperar a que aparezca.
-4. Ejecutar en la página el contenido de `scripts/extraer-academics.js` (javascript_tool).
+4. Ejecutar en la página el contenido de `scripts/extraer-academics.js` (javascript_tool). Devuelve un resumen
+   corto y descarga la lista completa como `t101-tareas.json` en la carpeta Descargas (Chrome corta las respuestas
+   largas de javascript_tool, por eso NO se copia el JSON a mano).
    - Si devuelve `{"error": ...}` o 0 filas, notificar y terminar sin tocar nada.
-5. Guardar el JSON devuelto, tal cual, en `.cache/academics-raw.json`.
+5. Esperar 2 segundos y mover el archivo más reciente `C:\Users\Damer\Downloads\t101-tareas*.json` a
+   `.cache/academics-raw.json` (por ejemplo: `mv "$(ls -t /c/Users/Damer/Downloads/t101-tareas*.json | head -1)" .cache/academics-raw.json`).
 6. Ejecutar `node scripts/actualizar.mjs` y leer el resumen.
 7. Para cada tarea con `"revisar": true` en `data/tareas.json`:
    - `title`: corto (máx. ~55 caracteres), claro, en español, sin repetir el nombre de la materia.

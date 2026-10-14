@@ -3,7 +3,8 @@
 //   node scripts/notificar.mjs              envía hasta dos avisos: lo de mañana y las tareas nuevas (si hay)
 //   node scripts/notificar.mjs --ver        solo muestra el aviso, no envía nada
 //   node scripts/notificar.mjs --prueba     envía los dos tipos de aviso marcados como prueba
-//   node scripts/notificar.mjs --tarde      recordatorio de las 3 pm (solo lo de mañana; domingo a jueves)
+//   node scripts/notificar.mjs --solo-nuevas  solo el aviso de tareas nuevas (actualización a mano después de las 6 pm)
+//   node scripts/notificar.mjs --tarde     recordatorio de las 3 pm (solo lo de mañana; domingo a jueves)
 //   node scripts/notificar.mjs --noche      recordatorio de las 9 pm (solo lo de mañana; domingo a jueves)
 //
 // El aviso junta: tareas nuevas de hoy (.cache/nuevas.json, lo escribe actualizar.mjs)
@@ -80,6 +81,9 @@ if (modo === "--prueba"){
     { title: "Prueba · Mañana: 2 entregas", body: ej.map(t => `• ${materia(t)}: ${t.title}`).join("\n"), url: "./", tag: etiqueta("prueba1", hoy) },
     { title: "Prueba · 2 tareas nuevas en 10-1", body: ej.map(t => `• ${materia(t)} (se revisa el ${corta(t)}): ${t.title}`).join("\n"), url: "./", tag: etiqueta("prueba2", hoy) }
   ];
+} else if (modo === "--solo-nuevas"){
+  // Para una actualización hecha a mano después de las 6 pm: solo el aviso de tareas nuevas
+  avisos = armarAvisos().filter(a => a.tag.includes("-nuevas-"));
 } else if (modo === "--tarde" || modo === "--noche"){
   // Recordatorios de las 3 pm y 9 pm: solo las noches antes de un día de clase (domingo a jueves)
   const dia = new Date().getDay();
