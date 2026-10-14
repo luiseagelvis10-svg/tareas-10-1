@@ -85,8 +85,11 @@ if (modo === "--prueba"){
   // Para una actualización hecha a mano después de las 6 pm: solo el aviso de tareas nuevas
   avisos = armarAvisos().filter(a => a.tag.includes("-nuevas-"));
 } else if (modo === "--tarde" || modo === "--noche"){
-  // Recordatorios de las 3 pm y 9 pm: solo las noches antes de un día de clase (domingo a jueves)
-  const dia = new Date().getDay();
+  // Recordatorios de las 3 pm y 9 pm: solo las noches antes de un día de clase (domingo a jueves).
+  // Si el computador estaba suspendido y la tarea corre tarde, solo se envía dentro de un margen razonable.
+  const ahora = new Date(), dia = ahora.getDay(), min = ahora.getHours() * 60 + ahora.getMinutes();
+  const [desde, hasta] = modo === "--tarde" ? [15 * 60, 18 * 60] : [21 * 60, 23 * 60 + 30];
+  if (min < desde || min >= hasta){ console.log(`Fuera de horario para ${modo} (${ahora.toLocaleTimeString("es-CO")}): no se envía.`); process.exit(0); }
   avisos = dia >= 0 && dia <= 4 ? armarAvisos(modo.slice(2)) : [];
 } else avisos = armarAvisos();
 
@@ -98,7 +101,16 @@ if (process.argv.includes("--ver")) process.exit(0); // --ver también sirve con
 
 webpush.setVapidDetails(llaves.contacto, llaves.vapidPublica, llaves.vapidPrivada);
 const auth = { Authorization: `Bearer ${llaves.claveEnvio}` };
-const r = await fetch(`${llaves.servidor}/suscripciones`, { headers: auth });
+// Si el computador acaba de despertar puede no tener internet todavía: reintenta unos minutos
+let r;
+for (let intento = 1; ; intento++){
+  try { r = await fetch(`${llaves.servidor}/suscripciones`, { headers: auth }); break; }
+  catch (e) {
+    if (intento >= 8){ console.error(`ERROR: sin conexión con el servidor de avisos (${e.cause?.code || e.message})`); process.exit(3); }
+    console.log(`  sin internet todavía (intento ${intento}), reintento en 30 s…`);
+    await new Promise(res => setTimeout(res, 30000));
+  }
+}
 if (!r.ok){ console.error(`ERROR: el servidor de avisos respondió ${r.status}`); process.exit(2); }
 const { suscripciones } = await r.json();
 
